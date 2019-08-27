@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package calculator;
+option go_package = "calculatorpb";
+
+message SumRequest {
+    int32 intA = 1;
+    int32 intB = 2;
+}
+
+message SumResponse {
+    int32 result = 1;
+
+}
+
+message PrimeNumberDecompositionRequest{
+    int64 number = 1;
+}
+
+message PrimeNumberDecompositionResponse{
+    int64 prime_factor = 1;
+}
+
+message ComputeAverageRequest{
+    int32 number = 1;
+}
+
+message ComputeAverageResponse{
+    double average = 1;
+}
+
+message FindMaximumRequest{
+    int32 number = 1;
+}
+
+message FindMaximumResponse{
+    int32 maxNumber = 1;
+}
+
+service CalculatorService {
+    //unary API
+    //when you define a groc service should take somethingRequest and return somethingResponse
+    //rpc call called greet that takes a GreetRequest as input  and returns a GreetResponse
+    rpc Sum(SumRequest) returns (SumResponse){};
+
+    //Server stream
+    rpc PrimeNumberDecomposition(PrimeNumberDecompositionRequest) returns (stream PrimeNumberDecompositionResponse){};
+
+    //Client stream
+    rpc ComputeAverage (stream ComputeAverageRequest) returns (ComputeAverageResponse){};
+
+    //BiDi stream
+    rpc FindMaximum(stream FindMaximumRequest) returns (stream FindMaximumResponse){};
+}
+

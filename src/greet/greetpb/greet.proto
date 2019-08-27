@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package greet;
+option go_package = "greetpb";
+
+//protocol buffer message
+message Greeting {
+    string first_name = 1;
+    string last_name = 2;
+}
+
+message GreetRequest {
+    Greeting greeting = 1;
+}
+
+message GreetResponse {
+    string result = 1;
+
+}
+
+message GreetManyTimesRequest {
+    Greeting greeting = 1;
+}
+
+message GreetManyTimesResponse {
+    string result = 1;
+}
+
+message LongGreetRequest{
+    Greeting greeting = 1;
+}
+
+message LongGreetResponse{
+    string result = 1;
+}
+
+message GreetEveryoneRequest{
+    Greeting greeting = 1;
+}
+
+message GreetEveryoneResponse{
+    string result = 1;
+}
+
+service GreetService {
+    //UNARY API
+    //when you define a groc service should take somethingRequest and return somethingResponse
+    //rpc call called greet that takes a GreetRequest as input  and returns a GreetResponse
+    rpc Greet(GreetRequest) returns (GreetResponse){};
+
+    //SERVER STREAMING
+    //Client request and server streams response
+    //Good for big data, chat bots..
+    //When you have a new rpc its good to always create new messages
+    rpc GreetManyTimes(GreetManyTimesRequest) returns (stream GreetManyTimesResponse) {};
+
+    //CLIENT STREAMING
+    //Client stream request
+    //server then returns one response when you want and close stream
+    //Good for big data or when server processing is expensive
+    rpc LongGreet(stream LongGreetRequest) returns (LongGreetResponse){};
+
+    //BI DIRECTIONAL STREAMNING
+    //Good for Chat bots, long running processess and async with lots of data
+    rpc GreetEveryone(stream GreetEveryoneRequest) returns (stream GreetEveryoneResponse){};
+}
